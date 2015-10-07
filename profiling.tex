@@ -1,0 +1,58 @@
+\chapter{Python Profiling}
+\paragraph{Introduction}
+It is well known that Python as an interpreted language is considerably slower than both compiled C and C++ code. However, the Python module that provides our OpenCV-interface is not much more than a wrapper for the C++ core in OpenCV.
+
+As such, we use Python for quickly developing and structuring the program, while the actual heavy lifting is done by compiled C++ code. Our design goal is then to write efficient Python and using quick algorithms where possible, leveraging the built-in functionality in the C++ core of OpenCV.
+
+In order to investigate both time and memory used for our solution, a few good methods exists.
+
+\paragraph{line\_profiler}
+A module for Python that provides line by line profiling capabilities is the line\_profiler program. The actual time spent inside a function is outputted.
+
+We can install the module through pip.
+
+\begin{lstlisting}[style=BashInputStyle]
+    pip install line_profiler
+\end{lstlisting}
+
+After adding the keyword profile ahead of each function we would like to profile, we run the profiler as kernprof.py through Python.
+
+\begin{lstlisting}[style=BashInputStyle]
+    python kernprof.py -l -v program.py
+\end{lstlisting}
+
+By running line\_profiler on the initial proof of concept, we will get the time spent on each function we used @profile in front.
+
+\begin{lstlisting}[style=BashInputStyle]
+Total time: 0.475104 s
+File: jsg.py
+Function: find_potential_glyphs at line 90
+
+Total time: 0.116176 s
+File: main.py
+Function: init_capture_device at line 18
+
+Total time: 2.35552 s
+File: main.py
+Function: grab_frame at line 29
+
+Total time: 5.41517 s
+File: ptz.py
+Function: execute_command at line 25
+\end{lstlisting}
+
+This tells us that through the running time of the program, most time was spent inside ptz.py.
+
+We can for example, see the following output for code from ptz.py, the file that sends ptz commands to the camera.
+
+\includegraphics[scale=0.35]{line_profiler_output}
+
+We see that the function execute\_command contains, at line 30, a http request which consumes 99.7\% of the time used inside the function. Out of this, it is suggested that the overhead by using the CGI element for doing PTZ is a function of network latency.
+
+\paragraph{memory\_profiler}
+Another important resource is the amount of memory being used by the program. Using this, we can discover memory leaks and further optimize our code. We can install the module through pip. We are also adviced to install psutil, as it improves performance of memory\_profiler.
+
+\begin{lstlisting}[style=BashInputStyle]
+    pip install memory_profiler
+    pip install psutil
+\end{lstlisting}

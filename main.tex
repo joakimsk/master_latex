@@ -1,0 +1,65 @@
+\documentclass[a4paper,12pt,openright,twoside,]{report}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{subfiles}
+\usepackage{verbatim}
+\usepackage[utf8]{inputenc}
+\usepackage[inner=3cm,outer=3cm]{geometry}
+\usepackage[section]{placeins}
+\usepackage{gensymb}
+
+\tolerance = 5000
+\hbadness = \tolerance
+\pretolerance = 2000
+
+\graphicspath{ {./images/} }
+
+\lstdefinestyle{BashInputStyle}{
+  language=bash,
+  basicstyle=\small\sffamily,
+  numbers=none,
+  numberstyle=\tiny,
+  numbersep=3pt,
+  frame=tb,
+  columns=fullflexible,
+  backgroundcolor=\color{yellow!20},
+  linewidth=0.9\linewidth,
+  xleftmargin=0.1\linewidth
+}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\newcommand{\shellcmd}[1]{\\\indent\indent\texttt{\footnotesize\# #1}\\}
+
+\begin{document}
+\include{front} % This is the titlepage
+\setcounter{page}{0}
+\pagenumbering{roman}
+\subfile{preface}
+\subfile{summary}
+\tableofcontents
+\listoffigures
+\subfile{chapter1}
+\subfile{chapter2}
+\subfile{chapter3}
+\subfile{chapter4}
+\subfile{chapter5}
+\subfile{chapter6}
+\appendix
+\subfile{acronyms}
+\subfile{q6045}
+\subfile{gsoap}
+\subfile{onvif}
+\subfile{profiling}
+\bibliographystyle{ieeetran}
+\bibliography{bibliography}
+\end{document}
