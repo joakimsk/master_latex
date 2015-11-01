@@ -45,8 +45,6 @@ This tells us that through the running time of the program, most time was spent 
 
 We can for example, see the following output for code from ptz.py, the file that sends ptz commands to the camera.
 
-\includegraphics[scale=0.35]{line_profiler_output}
-
 We see that the function execute\_command contains, at line 30, a http request which consumes 99.7\% of the time used inside the function. Out of this, it is suggested that the overhead by using the CGI element for doing PTZ is a function of network latency.
 
 \paragraph{memory\_profiler}
