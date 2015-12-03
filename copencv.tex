@@ -1,0 +1,32 @@
+\chapter{Compiling OpenCV 3.0 for OS X}
+OpenCV 3.0 gold release arrived in June 2015. Being this new, the resources to properly compile OpenCV 3.0 for OS X are not easy to come by. A few blogs have a partial solution for setting up the software, so this appendix will not contain a complete solution itself, but mention the most important points when building OpenCV 3.0 for OS X.
+
+Homebrew is utilized to settle most build-dependencies, with good success.
+
+When building opencv, we also would be interested in building opencv\_contrib modules.
+
+\begin{lstlisting}[style=BashInputStyle]
+    cd ~
+    git clone https://github.com/Itseez/opencv.git
+    git clone https://github.com/Itseez/opencv_contrib.git
+\end{lstlisting}
+
+We use the command-line interface for cmake, but it should also be possible to use the GUI version. Notice that we explicitly disable CUDA in this case, and enable OpenCL. We also build with support for Python 2.7, as the author considers this a good way to rapidly test functionality.
+
+\begin{lstlisting}[style=BashInputStyle]
+cmake -D CMAKE_BUILD_TYPE=RELEASE \
+-D CMAKE_INSTALL_PREFIX=/usr/local \
+-D PYTHON2_PACKAGES_PATH=~/.virtualenvs/cv/lib/python2.7/site-packages \
+-D PYTHON2_LIBRARY=/usr/local/Cellar/python/2.7.10/Frameworks/Python.framework/Versions/2.7/bin \
+-D PYTHON2_INCLUDE_DIR=/usr/local/Frameworks/Python.framework/Headers \
+-D INSTALL_C_EXAMPLES=ON \
+-D INSTALL_PYTHON_EXAMPLES=ON \
+-D BUILD_EXAMPLES=ON \
+-D WITH_OPENCL=ON \
+-D WITH_CUDA=OFF \
+-D WITH_FFMPEG=ON \
+-D BUILD_DOCS=ON \
+-D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules ..
+\end{lstlisting}
+
+We have not installed clBLAS nor clFFT, two libraries that are considered advantageous when using OpenCL. These libraries will have to be compiled with their own specific dependencies.
