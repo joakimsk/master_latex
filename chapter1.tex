@@ -39,6 +39,16 @@ Semi-automated CCTV surveillance have been considered by \citet{dadashi12} as a 
 
 The machine vision algorithm that was implemented in the authors earlier work, as mentioned in work done by \citet{boyers13} and \citet{kirillov10}, will be used to recognize the distinct symbol, hereafter called a glyph.
 
+The challenges of outdoor machine vision in uncontrollable weather and lightning conditions have been raised by the author in the same unpublished project thesis. Figure \ref{fig:timelapse_viewpoint} shows a series of images captured by the author, which shows the differences in color, clarity and reflections.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{timelapse_viewpoint.jpg}
+    \caption{Timelapse through a day of a CCTV camera in Kristiansand, 4th of March 2015. Source: Own work}
+    \label{fig:timelapse_viewpoint}
+\end{figure}
+\FloatBarrier
+
 Our camera of choice, an AXIS Q6045 was selected both by its widespread use in the oil- and gas industry, and because this is what the author had at hand. It is a modern high-definition PTZ-camera produced by Axis Communications.  Axis Communications have provided a white paper which provides a good overview of the various elements that increase latency in a live video stream. This document is available online. \citep{axis15}
 
 The inherit differences between analog and digital video transmission have been examined by \citet{hill10}, and the conclusion was that latency present in digital transmission is approaching negligible for normal usage. Still, the article presents findings that show latency of a digital transmission being more than 5x of the analog transmission latency. The upsides of digital transmission include increased quality of image, flexibility of digital encoding and ability to use analytic software.
@@ -70,7 +80,9 @@ Heterogeneous computing platforms are still considered to be in its infancy, and
 
 The software world progress quickly, and new solutions can suddenly become obsolete, requiring legacy maintenance and making in-house developed software seem much like building a tower of cards as the flux of developers who knows the system changes over time. This would make an externally maintained solution seem like a better idea, but sharing information to make the development work is not an easy task as each company protects its own interests.
 
-It is considered a hard challenge therefore, to make a truly reliable system that works in the real world. Making a tabletop solution is not nearly enough to allow a big company to test this out in the real world.
+Machine vision algorithms implemented will not be robust enough to handle all possible lightning conditions, and some of these may assume that a certain color can be identified. This means that artificial lightning is paramount for reliable machine vision outdoors, if we are to only rely on optical sensors. Alternatives exist, but these will not be explored further in this thesis. The author have made a summary of these that can be read in the unpublished project thesis \citet{joakimsk14}.
+
+It is considered a hard challenge therefore, to make a truly reliable system that works in the real world. Making a tabletop solution is not nearly enough to allow a big company to test this offshore at a customers platform, and much work remains before a fully commercial solution is ready for sale.
 
 Seeing past these limitations, however, is a world of possibilities, which this study tries to explore.
 
@@ -88,18 +100,7 @@ It will also be tried to use multiple video sources, however due to the lack of 
 The construction of a proof of concept pipe detection system for fingerboards will be done in a rapid prototyping environment, to show that it is possible to increase control system awareness in existing infrastructure on the oil rig.
 
 \section{Structure of the report}
-Some diagrams have been made by the author. These diagrams follow a coloring scheme, to ease reading.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{coloring.png}
-    \caption{Color scheme for diagrams. Source: Own work}
-    \label{fig:coloring}
-\end{figure}
-\FloatBarrier
-
-The colors of boxes are used to describe their role in the total picture. See figure \ref{fig:coloring} for a description of their function.
-All the software developed as a part of this project can be found at the authors personal repository at Github ~\cite{github}, feel free to use this for future non-commercial work. The Latex source is also available.
+All the software developed as a part of this project can be found at the authors personal repository at Github, ~\cite{github}, feel free to use this for future non-commercial work. The Latex source is also available. Some information may have been omitted to hide confidential company information.
 
 \section{Structure of the DVD}
 The DVD contains a snapshot of the latest Github code repository as of the date of this report.

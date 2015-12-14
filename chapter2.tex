@@ -1,6 +1,6 @@
 \chapter{Theory}
+\label{ch:chapter2}
 Following is a brief introduction to some of the aspects that affects the solution, and should be among the things considered when developing a commercial application.
-
 \section{Hardware}
 \subsection{Camera}
 The camera specifications and performance directly affects the results. It is the source of input data for the computer vision software, and it may also be the output, which will be the case when the PTZ is controlled by the software.
@@ -30,7 +30,7 @@ Axis Communications have introduced precise iris control to some cameras, known 
     \centering
     \includegraphics[width=0.8\textwidth]{7228218072_042541190a.jpg}
     \caption{Iris. Source: Online \citet{iris15}}
-    \label{fig:cfs_simple_new}
+    \label{fig:7228218072_042541190a}
 \end{figure}
 \FloatBarrier
 
@@ -38,7 +38,7 @@ Axis Communications have introduced precise iris control to some cameras, known 
     \centering
     \includegraphics[width=1.0\textwidth]{iris_dof_axis.png}
     \caption{Correlation between iris opening and depth of field. Source: Online \citet{axispiris15}}
-    \label{fig:cfs_simple_new}
+    \label{fig:iris_dof_axis}
 \end{figure}
 \FloatBarrier
 
@@ -64,7 +64,7 @@ A function of the camera hardware and firmware, the camera interface and path of
     \centering
     \includegraphics[width=1.0\textwidth]{svensson13_network.png}
     \caption{Diagram of data through an IP network. Source: \citet{svensson13}}
-    \label{fig:cfs_simple_new}
+    \label{fig:svensson13_network}
 \end{figure}
 \FloatBarrier
 
@@ -76,7 +76,7 @@ Using a thin translucent plastic sheet to laminate a paper print of the glyph ma
     \centering
     \includegraphics[width=0.8\textwidth]{reflection_layer_in_vray_for_sketchup_4.png}
     \caption{Glossiness and its change on reflection as shown in raytracing software. Source: Online \citet{gloss15}}
-    \label{fig:cfs_simple_new}
+    \label{fig:reflection_layer_in_vray_for_sketchup_4}
 \end{figure}
 \FloatBarrier
 
@@ -99,7 +99,7 @@ Disadvantages include possibilities of interfering with each other if they share
     \centering
     \includegraphics[width=1.0\textwidth]{multithreading.png}
     \caption{Singlethread versus multithread execution. Source: Online \citet{multithreadingcpp15}}
-    \label{fig:cfs_simple_new}
+    \label{fig:multithreading}
 \end{figure}
 \FloatBarrier
 
@@ -114,7 +114,7 @@ Heterogenous System Architecture can be used to integrate central processing uni
     \centering
     \includegraphics[width=0.8\textwidth]{cpu-gpu.png}
     \caption{Conceptual overview of a heterogeneous system with CPU and GPU cores. Source: Online \citet{cpugpu13}}
-    \label{fig:cfs_simple_new}
+    \label{fig:cpu-gpu.png}
 \end{figure}
 \FloatBarrier
 
@@ -125,7 +125,7 @@ The NVIDIA Corporation released the CUDA platform in June 2007, and is a paralle
     \centering
     \includegraphics[width=0.8\textwidth]{CUDA_processing_flow_(En).PNG}
     \caption{CUDA processing flow. Source: Online \citet{wikicuda15}}
-    \label{fig:cfs_simple_new}
+    \label{fig:CUDA_processing_flow_(En)}
 \end{figure}
 \FloatBarrier
 
@@ -147,9 +147,16 @@ OpenCV 3.0 gold release was made available in 4th of June 2015. It supports Open
     \centering
     \includegraphics[width=0.8\textwidth]{perfcudavscpuopencv.png}
     \caption{Performance speedups when using CUDA and a GPU. Source: Online \citet{opencvcuda15}}
-    \label{fig:cfs_simple_new}
+    \label{fig:perfcudavscpuopencv}
 \end{figure}
 \FloatBarrier
 
-
 \subsection{Linux}
+An alternative to Microsoft Windows, the operating system that can run on the widest range of computer architectures is Linux. The operating system kernel was first released in 1991 by Linus Torvalds, and it is a clone of UNIX.
+It is a free and open-source collaboration, being developed by programmers all around the world.
+The great power of Linux comes through its flexibility, and it or a flavor of it is commonly found powering the servers that make up the world wide web.
+Every flavor of Linux is known as a distribution, and most of the larger distributions come with great package management tools.
+For Ubuntu, we can use the same tools as are used in the Debian distribution, which includes apt-get, to install the latest releases of open source software.
+It is possible to optimize software running on a Linux system further than what is possible with a Microsoft Windows system, and there is by default less overhead on Linux.
+Some downsides of using Linux include a very fragmented software world, and many bleeding edge updates that can make the system stop working if carelessly updated. The learning curve is also steeper, and a lot of frustration is to be expected if one has not worked with Linux before.
+A great resource to learn more about the Linux operating system is Wikipedia \citep{wikiLinux15} and Linus Torvalds GitHub-repository for Linux \citep{githubLinux15}.
