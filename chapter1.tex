@@ -2,11 +2,9 @@
 \pagenumbering{arabic}
 \setcounter{page}{1}
 \section{Background}
-The Norwegian economy is cooling under a pessimistic oil price of close to 45 USD per barrel as of autumn 2015. Under heavy pressure to perform, companies involved in the exploitation of hydrocarbons are cutting costs while trying to increase productivity.
+The Norwegian economy is cooling under a pessimistic oil price of close to 37 USD per barrel as of December 2015. Under heavy pressure to perform, companies involved in the exploitation of hydrocarbons are cutting costs while trying to increase productivity.
 
-As a means of improving profitability, decision support systems have been developed, which tries to provide real-time support when drilling oil wells. One example of these was a product of work done at NTNU.
-
-A roadmap for automating drilling systems was established in June 2013 with the objective of providing a guideline to the future emergence of drilling systems automation.
+As a means of improving profitability, real-time decision support systems have been developed. One example of these was a product of work done at NTNU, by Verdande Technology, established 2004. The company is now closed down after becoming bankrupt in December 2014 as potential customers were cutting costs.
 
 Automation of pipe handling have been pursued by several companies in the oil rig equipment production market with moderate success. The industry have realized that more may be gained from supporting humans in the center of the operation, than to completely eliminate humans. As such, systems to support the human driller need to be developed.
 
@@ -18,7 +16,7 @@ This MSc thesis should address the following:
 \begin{itemize}
 \item Implementation of an auto tracking CCTV system using glyphs as visual descriptor.
 \item Analysis of dataset with real-world weather over a long period.
-\item Prototyping of an algorithm to detect casings and pipes in a fingerboard.
+\item Prototyping of an implementation to detect casings and pipes in a fingerboard.
 \end{itemize}
 
 \subsection{Problem formulation}
@@ -30,7 +28,9 @@ How can we reduce the latency of the live camera feed to make feedback control o
 
 How can we track an object across multiple cameras?
 
-We will develop a solution to provide benefits to a human driller operating heavy machinery on an oil rig, but the solution is not limited to this application. Our end goal is to reduce the possibility of an undesired event, be it either damage to humans or expensive equipment.
+How can we identify tubulars in a fingerboard using machine vision, so that the control system can verify its data?
+
+The end goal is to reduce the possibility of an undesired event, be it either damage to humans or expensive equipment, and increase speed of operations.
 
 \subsection{Literature survey}
 As discussed by \citet{sklet05}, the concept of a safety barrier is not clearly defined and its meaning is ambiguous. With this in mind, we are looking to implement what \citet{rausand14} describes as a proactive safety barrier, also known as a frequency-reducing barrier, in other words a system to reduce the frequency of undesired events.
@@ -51,40 +51,47 @@ The challenges of outdoor machine vision in uncontrollable weather and lightning
 
 Our camera of choice, an AXIS Q6045 was selected both by its widespread use in the oil- and gas industry, and because this is what the author had at hand. It is a modern high-definition PTZ-camera produced by Axis Communications.  Axis Communications have provided a white paper which provides a good overview of the various elements that increase latency in a live video stream. This document is available online. \citep{axis15}
 
-The inherit differences between analog and digital video transmission have been examined by \citet{hill10}, and the conclusion was that latency present in digital transmission is approaching negligible for normal usage. Still, the article presents findings that show latency of a digital transmission being more than 5x of the analog transmission latency. The upsides of digital transmission include increased quality of image, flexibility of digital encoding and ability to use analytic software.
+The inherit differences between analog and digital IP\footnote{IP, the short form of Internet Protocol, a principal communications protocol for relaying datagrams across network boundaries. IPv4 was deployed in the ARPANET in 1983.} transmission of video have been examined by \citet{hill09}, and the conclusion was that latency present in digital IP transmission is within acceptable values for normal usage. Still, the article presents findings that show latency of a digital transmission being more than 5x of the analog transmission latency. The latency was measured to be between 120 ms up to 1600 ms depending on the resolution of the image and its compression. The upsides of digital transmission include increased quality of image, flexibility of digital encoding and ability to use analytic software. The paper does not describe other forms of digital video transmissions that exist, including raw digital transmission using SDI\footnote{Serial Digital Interface, high-speed digital video transmission defined by Society of Motion Picture \& Television Engineers.}, and it is also outdated in terms of the current state of the art cameras available, but it provides a reference.
 
-Work done by \citet{svensson13} involved methods to reduce the delays that are inherently found in digital video transmission systems and the control of these. Their research was done on AXIS Q6035 and AXIS Q6032 cameras. The author assumes these to be closely related to the AXIS Q6045, and their findings therefore useful for work done in this thesis. Findings include camera firmware being among the key factors for video delay, as the stock cameras have implemented an inefficient communication scheme, and there are other suggestions to reduce delay presented. For the scope of this thesis, we will have these delays in mind and build around them, as any firmware upgrades have to come from Axis themselves if any company would consider using them.
+Work done by \citet{svensson13} involved methods to reduce the delays that are inherently found in digital IP transmission systems and the control of these. Their research was done on AXIS Q6035 and AXIS Q6032 cameras. The author assumes these to be closely related to the AXIS Q6045, and their findings therefore useful for work done in this thesis. Findings include camera operating system being among the key factors for video delay, as the stock cameras have implemented an inefficient communication scheme, and there are other suggestions to reduce delay presented. For the scope of this thesis, we will have these delays in mind and build around them, as any operating system upgrades have to come from Axis themselves if any company would consider using them.
 
-Tracking of objects across multiple cameras have been explored with most focus on overlapping camera views. Some work has also been done on non-overlapping camera views by \citet{javed03}, where camera topology and path probabilities are learnt without any inter-camera calibration. As soon as one uses images from several sources, the timestamp for the images becomes crucial as a point of reference. Through the use of Parzen windows, the inter-camera space-time probabilities can be mapped. The method mentioned does require a learning phase.
+Tracking of objects across multiple cameras have been explored with most focus on overlapping camera views. Some work has also been done on non-overlapping camera views by \citet{javed03}, where camera topology and path probabilities are learnt without any inter-camera calibration. When images from several sources are used, the time-synchronization of the images becomes crucial as a point of reference. Through the use of Parzen windows, the inter-camera space-time probabilities can be mapped. The method mentioned does require a learning phase.
 
 \subsection{What remains to be done?}
 As a summary of the literature survey, we see that much work has been done in the different fields, but not much have been found on combining the results of these into a solution that can provide modern, automated CCTV tracking of industrial processes involving heavy machinery in a way that retains the human operator in the center of the process.
 
-We aim to break down the information silo and combine as much as possible, given constraints of time, into a proof of concept which can be the stepping stone to a commercial product.
+The implementation and comparison of a robust and responsive automated CCTV tracking system remains to be done, as an earlier proof of concept implementation was done by the author in 2014.
+
+
+Not much literature on fingerboard tubular detection have been found. It is believed that the reason for this is that the word fingerboard is a technical jargon used in the drilling industry, and that any research done is done in-house with no intention of publishing results.
+
+The implementation of a simple fingerboard tubular detection program remains to be done, and the analysis of its performance.
+
+We aim to combine as much as possible from the various fields, given constraints of time, into a proof of concept which can be the stepping stone to a commercial product in the case of CCTV tracking, and a prototype implementation for the fingerboard tubular detection.
 
 \section{Objectives}
 The objectives of the work done through this thesis consists of:
 \begin{enumerate}
-  \item Implementation of a multi-source GPU-accelerated machine vision program that can control a CCTV camera and follow a symbol
-  \item Implementation of a proof of concept pipe-detection algorithm for fingerboards
+  \item Implementation of a multi-source GPU-accelerated machine vision program that can control a CCTV camera and follow a glyph symbol, and comparison of its performance
+  \item Implementation of a proof of concept tubular-detection program for fingerboards
 \end{enumerate}
 
 \section{Limitations}
-The limitations that relates to this study includes both technical challenges, environmental and operational conditions as well as oil politics in a broad sense, but focus is on the technical challenges for the sake of brevity.
+The limitations that relates to this study includes both technical challenges, environmental and operational conditions, but focus is on the technical challenges for the sake of brevity.
 
-As CCTV cameras have evolved, the video transfer method has gone through some changes to cater for higher resolution and more true representation of the world as observed. By this, analog signals have been replaced by digital signals. Analog transmission is known for being both robust, simple and near-instant, however they are prone to signal deterioration which may affect machine vision algorithms, and their flexibility of location is not as good as modern digital transmission. With digital transmission, usually over Ethernet, the cost of these systems have gone down, flexibility have gone up and resolution as well as control has improved, yet this have introduced new challenges. Data loss is a real possibility, increased latency through encoding and decoding of the video stream and a shared network highway puts more demand on the implementation. One serious limitation to the implementation of the system as presented, is therefore as a feedback system, the upper latency limit for which when the system becomes unstable.
+As CCTV cameras have evolved, the video transfer method has gone through some changes to cater for higher resolutions and more true representation of the world as observed. By this, analog signals have been replaced by digital signals. Analog transmission is known for being both robust, simple and near-instant, however they are prone to signal deterioration which may affect machine vision algorithms, and their flexibility of location is not as good as modern digital transmission. With digital transmission, commonly using IP, the cost of these systems have gone down, flexibility have gone up and resolution as well as control has improved, yet this have introduced new challenges. Packet loss is a real possibility in IP networks, increased latency through encoding and decoding of the video stream and a shared network highway puts more demand on the implementation. One serious limitation to the implementation of the system as presented, is therefore as a feedback system, the upper latency limit for which when the system becomes unstable. The use of raw digital transmission such as SDI would minimize latency and give room for even higher resolution images with little to no chance of data loss, but this has not been explored as it requires specialized cameras, coaxial cables and frame grabbers.
 
-The oil industry is considered a conservative one, as lost production time can lead to extreme expenses and questions regarding responsibility and passing on cost to service providers. Technology is also highly guarded, as the sheer amount of money that can be gained from saving a fraction of time, means that cooperation is not common in the industry, and transparency of systems and solutions may be less than ideal. The idea then, of making changes to what already works, is not easy to plant, and this also limits the available data set for the purpose of making robust systems.
+Technology is highly guarded, and real offshore operations are not easy to get access to. Cooperation is not common in the industry, and transparency of systems and solutions may be less than ideal. This limits the available data set for the purpose of research and making robust systems.
 
-Heterogeneous computing platforms are still considered to be in its infancy, and both CUDA as well as OpenCL is under active developement. Choosing one technology will lead to an exclusion of either benefits or available computing platforms. A limitation here is that the resulting speed and benefits of heterogeneous computing are not set in stone, and that there will always be improvements that can be done to make an otherwise unworkable system to a brilliant idea.
+The software world progress quickly, and new solutions can suddenly become obsolete. The technological debt increases quickly. This would make an externally maintained solution seem like a better idea, but sharing information to make the development work is not an easy task as each company protects its own interests.
 
-The software world progress quickly, and new solutions can suddenly become obsolete, requiring legacy maintenance and making in-house developed software seem much like building a tower of cards as the flux of developers who knows the system changes over time. This would make an externally maintained solution seem like a better idea, but sharing information to make the development work is not an easy task as each company protects its own interests.
+Heterogeneous computing platforms are still considered to be in its infancy, and both CUDA as well as OpenCL is under active developement. Choosing one technology will lead to an exclusion of either benefits or available computing platforms. A limitation here is that the resulting speed and benefits of heterogeneous computing are not set in stone, and that there will always be improvements that can be done to make an otherwise unworkable system become a successful implementation.
 
-Machine vision algorithms implemented will not be robust enough to handle all possible lightning conditions, and some of these may assume that a certain color can be identified. This means that artificial lightning is paramount for reliable machine vision outdoors, if we are to only rely on optical sensors. Alternatives exist, but these will not be explored further in this thesis. The author have made a summary of these that can be read in the unpublished project thesis \citet{joakimsk14}.
+Algorithms implemented will not be robust enough to handle all possible lightning conditions, and some of these may assume that a certain color can be identified. This means that artificial lightning is paramount for reliable machine vision outdoors, if we are to only rely on optical sensors. Alternatives exist, but these will not be explored further in this thesis. The author have made a summary of these that can be read in the unpublished project thesis \citet{joakimsk14}.
 
-It is considered a hard challenge therefore, to make a truly reliable system that works in the real world. Making a tabletop solution is not nearly enough to allow a big company to test this offshore at a customers platform, and much work remains before a fully commercial solution is ready for sale.
+It is considered a hard challenge to make a truly reliable system that works in the real world. Making a tabletop solution is not nearly enough to allow a big company to test this offshore at a customers platform, and much work remains before a fully commercial solution is ready for sale.
 
-Seeing past these limitations, however, is a world of possibilities, which this study tries to explore.
+Seeing past these limitations, however, is a world of possibilities, which this study intends to explore.
 
 \section{Approach}
 \subsection{CCTV tracking system}
@@ -92,7 +99,7 @@ The implementation of the CCTV tracking system will be based on the authors prev
 
 After this system has been built, it will be tested with and without GPU acceleration, to determine if the full solution becomes more stable and reliable.
 
-A data-set will be analyzed to test the robustness of the machine vision algorithm and comment how snow, sun and other real-world factors affect the output.
+A data-set will be analyzed to test the robustness of the machine vision implementation and comment how snow, sun and other real-world factors affect the output.
 
 It will also be tried to use multiple video sources, however due to the lack of several CCTV cameras, this will only partially be explored using a common webcamera, as a means of doing camera handover.
 

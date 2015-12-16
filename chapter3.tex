@@ -6,8 +6,8 @@ The norm in the industry is that CCTV cameras are manually selected depending on
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{driller_cabin.jpg}
-    \caption{Modern driller cabin. Source:\cite{}}
+    \includegraphics[width=1.0\textwidth]{VHA_4389_retouched.jpg}
+    \caption{Modern driller cabin. Credit: Vegard Haugland, MHWirth AS, \citet{hauglandfoto15}}
     \label{fig:driller_cabin}
 \end{figure}
 \FloatBarrier
@@ -217,7 +217,7 @@ Another more recent method of ellipse detection is presented by \citet{wang14} b
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.3\textwidth]{alg_simple.png}
-    \caption{A generic machine vision algorithm before detailed description. Source: Own work}
+    \caption{A generic machine vision implementation before detailed description. Source: Own work}
     \label{fig:alg_simple}
 \end{figure}
 \FloatBarrier
@@ -229,17 +229,17 @@ The image is captured and stored with colors from the camera. In our case, we us
 
 For the sake of comparison, a matrix that shows some mid-winter lightning conditions and how it affects the image, which in turn may break our algorithm. See figure \ref{fig:lightning_matrix}. The author's comments on this figure follows.
 
-06:45, only artificial light can be seen. The tubulars and the fingerboard are black, no features besides their orientation and if lucky, width of the pipe, can be extracted.
+\paragraph{06:45} Only artificial light can be seen. The tubulars and the fingerboard are black, no features besides their orientation and if lucky, width of the pipe, can be extracted.
 
-08:15, we can see the fingerboard and the tubulars, but the picture is filled with artifacts that appear in low-light conditions. It should be possible to extract features from this image, but it is sub-optimal.
+\paragraph{08:15} We can see the fingerboard and the tubulars, but the picture is filled with artifacts that appear in low-light conditions. It should be possible to extract features from this image, but it is sub-optimal.
 
-10:00, the natural light from the sun is flat and thus, the image does not give us too much contrasts. The picture in itself should suffice to detect the tubulars.
+\paragraph{10:00} The natural light from the sun is flat and thus, the image does not give us too much contrasts. The picture in itself should suffice to detect the tubulars.
 
-13:15, the sun has now risen close to its max elevation above the horizon for the current date. A good amount of contrasts in the image makes this a good candidate for implementing a proof-of-concept algorithm.
+\paragraph{13:15} The sun has now risen close to its max elevation above the horizon for the current date. A good amount of contrasts in the image makes this a good candidate for implementing a proof-of-concept algorithm.
 
-17:00, colors captured have shifted to a cold blue, the sun is almost gone. If we use colors to distinguish the tubular, this would provide a challenge, unless we adjust the white-balance.
+\paragraph{17:00} Colors captured have shifted to a cold blue, the sun is almost gone. If we use colors to distinguish the tubular, this would provide a challenge, unless we adjust the white-balance.
 
-17:15, the camera went into low-light mode, which removes the IR-filter. Any artificial light is also turned off at this time, leading to a dark muddy and noisy picture that is not good for our use.
+\paragraph{17:15} The camera went into low-light mode, which removes the IR-filter. Any artificial light is also turned off at this time, leading to a dark muddy and noisy picture that is not good for our use.
 
 \begin{figure}[ht]
     \centering
@@ -249,5 +249,55 @@ For the sake of comparison, a matrix that shows some mid-winter lightning condit
 \end{figure}
 \FloatBarrier
 
+A thing to note is that the drilling floor on an offshore platform is not necessarily outdoors, but is partially sheltered from the environment, including natural light. This depends on the configuration. Machines may therefore move sheltered from natural light most of the time. Figure \ref{fig:wellcenter} shows a typical well center, partially in a partially sheltered area on an offshore oil platform. Figure \ref{fig:drillfloor_above} shows drillfloor as viewed from above, the fingerboards can be seen in the shade of the walls surrounding the tower.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{drillfloor.jpg}
+    \caption{Well center, at the base of the drill floor. Credit: Vegard Haugland, MHWirth AS, \citet{hauglandfoto15}}
+    \label{fig:wellcenter}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{drillfloor_above.jpg}
+    \caption{Looking down on the drill floor from outside. Credit: Vegard Haugland, MHWirth AS, \citet{hauglandfoto15}}
+    \label{fig:drillfloor_above}
+\end{figure}
+\FloatBarrier
+
+Since the drilling floor seems to be sheltered, we will avoid using a picture with snow on it, as was seen in the matrix figure \ref{fig:lightning_matrix}, and instead we use figure \ref{fig:mhwirth_fingerboard_test_image}, taken 18th of January 15:00 UTC+1 in the MHWirth test tower.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{mhwirth_fingerboard_test_image.jpg}
+    \caption{Fingerboard tubular detection sample image, taken 18th of January 15:00 UTC+1. Source: Own work}
+    \label{fig:mhwirth_fingerboard_test_image}
+\end{figure}
+\FloatBarrier
 
 
+\subsubsection{Preprocessing}
+After we have captured the image, we will need to preprocess it to maximize the performance of subsequent algorithms. The way we process the image depends on what we would like to do with it later on. One common step is to make a grayscale image, reducing colors that may not be needed. In this case, we will try to use what colors are found in the image, since the fingerboard, tubulars and fingers seem to have different colors. By using Adobe Photoshop or another image manipulation tool, we can quickly try out different blending methods, which may give us an idea of ways to improve the image to make it more suitable for known vision algorithms.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{linear_light.jpg}
+    \caption{Linear light blending of color image using Adobe Photoshop. Source: Own work}
+    \label{fig:linear_light}
+\end{figure}
+\FloatBarrier
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{linear_light_grayscale.jpg}
+    \caption{Linear light blending of grayscale image using Adobe Photoshop. Source: Own work}
+    \label{fig:linear_light_grayscale}
+\end{figure}
+\FloatBarrier
+
+\subsubsection{Feature extraction}
+
+\subsubsection{Matching}
+
+\subsubsection{Feedback}
