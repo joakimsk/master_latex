@@ -279,7 +279,7 @@ Since the drilling floor seems to be sheltered, we will avoid using a picture wi
 
 
 \subsubsection{Preprocessing}
-After we have captured the image, we will need to preprocess it to maximize the performance of subsequent algorithms. The way we process the image depends on what we would like to do with it later on. One common step is to make a grayscale image, reducing colors that may not be needed. In this case, we will try to use what colors are found in the image, since the fingerboard, tubulars and fingers seem to have different colors. By using Adobe Photoshop or another image manipulation tool, we can quickly try out different blending methods, which may give us an idea of ways to improve the image to make it more suitable for known vision algorithms.
+After we have captured the image, we will need to preprocess it to maximize the performance of subsequent algorithms. The way we process the image depends on what we would like to do with it later on. One common step is to make a grayscale image and blurring it, reducing colors that may not be needed and filtering noise. In this case, we will also try to use what colors are found in the image, since the fingerboard, tubulars and fingers appear to have distinct colors. By using Adobe Photoshop or another image manipulation tool, we can quickly try out different blending methods, which may give us an idea of ways to improve the image to make it more suitable for known vision algorithms.
 
 \begin{figure}[ht]
     \centering
@@ -297,7 +297,50 @@ After we have captured the image, we will need to preprocess it to maximize the 
 \FloatBarrier
 
 \subsubsection{Feature extraction}
+We would like to identify the fingerboard, use its position and orientation to evaluate the position of the fingers, and use the extracted information to filter out any tubulars that may be detected which does not make sense.
+
+A way to split our problem into several smaller problems is found in using the HSV color space, and masking out parts of the image depending on what HSV range a pixel falls inside. This is done for fingers, fingerboard and tubulars.
+
+For the tubulars, we also use Canny edge detection on a grayscale, blurred image in order to find the dark circle in each tubular.
 
 \subsubsection{Matching}
+The SimpleBlobDetector as described in the OpenCV documentation \citet{opencvdocs15} does most of the work. The algorithm does the following:
+
+\begin{enumerate}
+\item[1] One source image is converted to several binary images using several thresholds.
+\item[2] Connected components are extracted from every binary image using findContours, and centers are found.
+\item[3] Centers from several binary images are grouped by their coordinates.
+\item[4] The groups estimate final centers and their radiuses, and is returned as locations and sizes of keypoints.
+\end{enumerate}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{pipecloseup.jpg}
+    \caption{Scaled closeup of pipes from sample image. Source: Own work}
+    \label{fig:fb_detail}
+\end{figure}
+\FloatBarrier
+
+It also is controlled by a set of parameters, experimentally found to work for the specific image and light-conditions. This is a weakness that does not provide robust detection throughout changing light conditions, but it provides a quick and easy way of finding shapes of a certain circularity and convexity.
 
 \subsubsection{Feedback}
+The contours from the HSV masking are colored depending on their assumed function, and the keypoints of all blobs found are marked with a circle.
+
+\subsubsection{Complete implementation}
+The output from this implementation can be seen in figure \ref{fig:output}, and the program flow can be seen in \ref{fig:fb_detail}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fb_detail.png}
+    \caption{The proof of concept implementation for finding tubulars. Source: Own work}
+    \label{fig:fb_detail}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{output.png}
+    \caption{The output from the implementation. Source: Own work}
+    \label{fig:output}
+\end{figure}
+\FloatBarrier
