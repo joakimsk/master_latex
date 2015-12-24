@@ -67,6 +67,43 @@ The software is designed to run in a single thread, despite of potential benefit
 
 \subsubsection{Step A}
 OpenCV 3.0 comes with a new transparent API, but we still have to enable the usage of OpenCL and verify that it is indeed working. This also gives us the opportunity to disable OpenCL to see how this affects the speed of our algorithm.
+
+\paragraph{Enable}
+In order to enable OpenCL, we have to set an environment variable. At the same time, we can explicitly tell OpenCV which device should be used. ":GPU:0" means that we will use the first GPU for acceleration.
+
+\begin{lstlisting}[style=BashInputStyle]
+    export OPENCV_OPENCL_DEVICE=":GPU:0"
+\end{lstlisting}
+
+In addition, we will have to run a function to enable OpenCL in the C++ code.
+
+\begin{lstlisting}[style=BashInputStyle]
+	cv::ocl::setUseOpenCL(true);
+\end{lstlisting}
+
+We also have to create the context, and select device, which is done as follows:
+
+\begin{lstlisting}[style=BashInputStyle]
+	cv::ocl::Context context;
+	context.create(cv::ocl::Device::TYPE_GPU);
+	cv::ocl::Device(context.device(0));
+\end{lstlisting}
+
+
+\paragraph{Disable}
+If we rather want to disable OpenCL, we have to set the environment variable using "qqq" as value.
+
+\begin{lstlisting}[style=BashInputStyle]
+    export OPENCV_OPENCL_DEVICE="qqq"
+\end{lstlisting}
+
+In addition, we will run the same function as when we enabled, but with another argument in the C++ code.
+
+\begin{lstlisting}[style=BashInputStyle]
+	cv::ocl::setUseOpenCL(false);
+\end{lstlisting}
+
+
 \subsubsection{Step B}
 Each camera uses HTTP with Digest access authentication to prevent unauthorized access, which is an application of MD5 cryptographic hashing with nonce values to prevent replay attacks. The process of connecting to a camera and authenticating takes some time, so we do it once and increase the TCP parameters of the connection so that it is kept open. If we leave the TCP connection open, this should reduce the time needed for retrieving information in subsequent data transmissions. In order to create this connection, we query the camera for information while providing HTTP Digest information. The library we use is known as libcurl and more information about this open source project can be found at their webpage \citet{curl15}. Wireshark was used to find the authentication scheme.
 \subsubsection{Step C}
@@ -126,9 +163,6 @@ In \ref{fig:software_design_e}, we are now at the end of a cycle. The time spent
 
 \subsection{Analysis of dataset for robustness in weather conditions}
 Based on work done in the project thesis, a Python program using OpenCV 2 was created. Its purpose was to analyse pictures captured over the span of a year, from the MHWirth test tower located at Dvergsnes, Kristiansand.
-\begin{equation}
-58h 08min 18.3sec N 8h 04min 17.6sec E
-\end{equation}
 
 The dataset was gathered using another Python program written and deployed around christmas 2014, which at 15-minute intervals, captured images from a handful of CCTV cameras in the tower and stored them on a local server.
 
@@ -136,13 +170,7 @@ Located at various locations in the fifty meters tall test tower, the idea was t
 
 As the CCTV cameras have built-in low-light mode, a period during the night is considered too dark for the algorithm to detect the glyph.
 
-The program that gathered the pictures was running without supervision. A result of this was that some gaps of several days in the dataset exists.
-
-Initially, all the pictures were stored as lossless 24-bit RGB Portable Network Graphics. However, after a few months, the amount of data being gathered was filling up the server storage. It was then decided to continue the data gathering using JPEG, which would cut the required storage space close to $\frac{1}{5}$ of the space required with PNG-24
-
-\begin{equation}
-\frac{pictures}{camera}=365 days\cdot 24\frac{h}{day}\cdot 4\frac{pics}{h}=35040
-\end{equation}
+The program that gathered the pictures was running without supervision.
 
 \subsection{Tabletop setup for testing}
 In order to rapidly develop and test the software in a controlled environment, a tabletop setup was created. The main PTZ camera was connected to the internet, while the USB webcamera was connected to the Linux server.
@@ -170,6 +198,14 @@ In order to protect the privacy of other students in the room, the back of the P
     \label{fig:timer_in_use}
 \end{figure}
 
+\subsection{Camera settings}
+The AXIS Q6045 camera settings are adjusted in order to approach more favorable conditions in which the machine vision program operates.
+
+\begin{itemize}
+\item Resolution was set to 480x270 pixels as this seems sufficient for tracking a glyph. It also reduces the amount of data that has to be processed.
+\item Maximum frame rate was limited to 10 fps per viewer, where default is Unlimited. This also reduces the amount of images that pile up in the buffer on the computer.
+\item MJPEG will be used for encoding the video stream. MJPEG is an intraframe video compression format, and it is the option that requires the least amount of work by the operating system in the CCTV camera, leading to least amount of latency possible without using SDI or modifying the operating system.
+\end{itemize}
 
 \section{Tubular detection in fingerboard}
 \subsection{Background}
@@ -327,20 +363,12 @@ It also is controlled by a set of parameters, experimentally found to work for t
 The contours from the HSV masking are colored depending on their assumed function, and the keypoints of all blobs found are marked with a circle.
 
 \subsubsection{Complete implementation}
-The output from this implementation can be seen in figure \ref{fig:output}, and the program flow can be seen in \ref{fig:fb_detail}.
+The program flow can be seen in \ref{fig:fb_detail}. Its output can be seen in Chapter 4 Results.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{fb_detail.png}
     \caption{The proof of concept implementation for finding tubulars. Source: Own work}
     \label{fig:fb_detail}
-\end{figure}
-\FloatBarrier
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{output.png}
-    \caption{The output from the implementation. Source: Own work}
-    \label{fig:output}
 \end{figure}
 \FloatBarrier

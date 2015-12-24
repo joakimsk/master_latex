@@ -1,4 +1,9 @@
 \subsection*{Summary}
 \addcontentsline{toc}{subsection}{Summary}
-Here comes the summary.
+This thesis concerns the use of machine vision in order to increase safety and performance around the drillfloor on an oil rig.
+Two cases have been explored. The first case is  an auto tracking CCTV system that allows the human supervisors to always see machines as they move around on the drillfloor. The second case is a proof of concept implementation of a system that can detect tubulars standing in fingerboards, in order to provide data verification for a control system.
+
+In order to explore these two cases, software was developed in both C++11 and Python, and a dataset gathered from a test tower was used, together with a tabletop setup which involves a linear actuator that can translate glyph symbols. OpenCL was explored as a way to speed up machine vision for tracking the glyph. A high-performance CCTV dome camera was used to follow the glyph, connected to a machine running Linux and the software developed.
+
+The conclusion of this research is that auto tracking CCTV cameras are preferably done in C++11 when compared to Python, but further research is needed to fully understand and utilize the OpenCV T-API interface for speeding up machine vision algorithms. Detection of tubulars in fingerboards is also working at a rudimentary level with the implementation, and further work has to be done on analysis of the features extracted by the implementation. Multiple camera sources have been tested for the tracking CCTV camera, but not for the tubular detection implementation.
 \newpage
